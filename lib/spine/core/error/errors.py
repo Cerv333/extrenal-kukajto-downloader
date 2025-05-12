@@ -1,0 +1,2 @@
+class SpineError(Exception):
+    pass

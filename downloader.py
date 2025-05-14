@@ -68,7 +68,7 @@ class Downloader:
     def download_file(self, stream_rec: dict, lang: str) -> str:
         chunk_size = 2 * 1024 * 1024
         total = 0
-        output_path = self.get_filename(lang, mime_to_ext(stream_rec['mime_type']))
+        output_path = self.get_filename(lang, mime_to_ext[stream_rec['mime_type']])
 
         http_session = Session()
         http_session.proxies = {

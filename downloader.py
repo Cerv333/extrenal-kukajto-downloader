@@ -90,7 +90,7 @@ class Downloader:
 
     def download_subtitle(self, stream_rec: dict) -> str:
         mime_type = stream_rec['mime_type']
-        if mime_type == MIME_TYPE_VTT:
+        if mime_type.startswith(MIME_TYPE_VTT):
             http_session = Session()
             http_session.proxies = {
                 'http': self._proxy,
@@ -101,6 +101,6 @@ class Downloader:
             print(f"Downloaded subtitle from {stream_rec['url']}")
             return response.text
         else:
-            raise WorkerError(f'Unsupported mime type for video: {mime_type}')
+            raise WorkerError(f'Unsupported mime type for subtitle: {mime_type}')
 
 

@@ -6,5 +6,7 @@ class BaseConfig:
     MYSTERY_VIDEO_API_URL = ''
     MYSTERY_VIDEO_ACCESS_TOKEN = ''
 
+    CDN_ACCESS_TOKEN = ''
+
     def get(self, key: str, default: any = None) -> any:
         return getattr(self, key, default)

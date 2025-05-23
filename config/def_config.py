@@ -9,5 +9,7 @@ class Config(BaseConfig):
     MYSTERY_VIDEO_API_URL = ''
     MYSTERY_VIDEO_ACCESS_TOKEN = ''
 
+    CDN_ACCESS_TOKEN = ''
+
 
 config = Config()

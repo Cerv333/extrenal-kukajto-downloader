@@ -26,7 +26,7 @@ def run_process():
                                 videos = downloader.download_all()
 
                                 print(f"Downloaded videos: {videos}")
-                                uploader = MysteryVideoService(config.CDN_UPLOAD_URL, config.MYSTERY_VIDEO_API_URL, config.MYSTERY_VIDEO_ACCESS_TOKEN)
+                                uploader = MysteryVideoService(config.CDN_UPLOAD_URL, config.MYSTERY_VIDEO_API_URL, config.MYSTERY_VIDEO_ACCESS_TOKEN, config.CDN_ACCESS_TOKEN)
                                 uploaded_res = uploader.upload_all(video_data['source_id'], videos)
                                 result_data = {
                                     'msg_type': 'response',

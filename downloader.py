@@ -13,7 +13,7 @@ class Downloader:
         self._temp_folder = temp_folder
         self._input_data = input_data
         zombie = input_data.get('zombie')
-        self._filename= input_data.get('filename')
+        self._filename = input_data.get('filename')
         self._proxy = zombie.get('proxy') if zombie else None
         self._zombie_id = zombie.get('id') if zombie else None
 
@@ -29,7 +29,7 @@ class Downloader:
                     subtitle_dict: Dict[str, str] = {}
 
                     for subtitle in lang_video['subtitles']:
-                        subtitle_dict[subtitle['lang']] = self.download_subtitle(subtitle['stream_rec'], lang_video['lang'])
+                        subtitle_dict[subtitle['lang']] = self.download_subtitle(subtitle['stream_rec'])
                     lang_video_res['subtitles'] = subtitle_dict
 
                     videos[lang_video['lang']] = lang_video_res
@@ -88,10 +88,17 @@ class Downloader:
         print(f"Downloaded to: {output_path}")
         return output_path
 
-    def download_subtitle(self, stream_rec: dict, lang: str) -> str:
+    def download_subtitle(self, stream_rec: dict) -> str:
         mime_type = stream_rec['mime_type']
         if mime_type == MIME_TYPE_VTT:
-            return self.download_file(stream_rec, lang)
+            http_session = Session()
+            http_session.proxies = {
+                'http': self._proxy,
+                'https': self._proxy
+            }
+            response = http_session.get(stream_rec['url'])
+            response.raise_for_status()
+            return response.text
         else:
             raise WorkerError(f'Unsupported mime type for video: {mime_type}')
 

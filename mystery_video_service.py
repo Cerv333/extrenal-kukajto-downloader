@@ -66,4 +66,9 @@ class MysteryVideoService:
         }
         body = dumps({'subtitle': subtitle})
         res = requests.post(f"https://api.premiumcdn.net/api/v1/files/{video_id}/subtitles/{lang}", headers=headers, data=body)
-        return res.status_code == 200
+        ok = res.status_code == 200
+        if not ok:
+            print(f"Error uploading subtitle [{lang}]: {res.status_code} {res.text}")
+        else:
+            print(f"Subtitle [{lang}] uploaded successfully")
+        return ok

@@ -98,6 +98,7 @@ class Downloader:
             }
             response = http_session.get(stream_rec['url'])
             response.raise_for_status()
+            print(f"Downloaded subtitle from {stream_rec['url']}")
             return response.text
         else:
             raise WorkerError(f'Unsupported mime type for video: {mime_type}')

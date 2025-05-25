@@ -1,3 +1,4 @@
+import time
 from json import loads, dumps
 from os import path
 from typing import Dict, Optional, List
@@ -19,7 +20,11 @@ class MysteryVideoService:
             video_id = self.upload_video(lang_data['video_path'], source_id, lang, list(lang_data['subtitles'].keys()))
             if video_id is not None:
                 for subtitle_lang in lang_data['subtitles']:
-                    self.upload_subtitle(video_id, lang_data['subtitles'][subtitle_lang], subtitle_lang)
+                    uploaded = False
+                    while not uploaded:
+                        uploaded = self.upload_subtitle(video_id, lang_data['subtitles'][subtitle_lang], subtitle_lang)
+                        if not uploaded:
+                            time.sleep(5)
             res[lang] = bool(video_id)
         return res
 

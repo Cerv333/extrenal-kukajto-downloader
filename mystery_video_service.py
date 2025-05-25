@@ -20,10 +20,11 @@ class MysteryVideoService:
             video_id = self.upload_video(lang_data['video_path'], source_id, lang, list(lang_data['subtitles'].keys()))
             if video_id is not None:
                 for subtitle_lang in lang_data['subtitles']:
-                    uploaded = False
-                    while not uploaded:
+                    stop = False
+                    while not stop:
                         uploaded = self.upload_subtitle(video_id, lang_data['subtitles'][subtitle_lang], subtitle_lang)
-                        if not uploaded:
+                        stop = uploaded is not None
+                        if not stop:
                             time.sleep(5)
             res[lang] = bool(video_id)
         return res
@@ -65,7 +66,7 @@ class MysteryVideoService:
             print(f"Error uploading video: {e}")
             return None
 
-    def upload_subtitle(self, video_id: int, subtitle: str, lang: str) -> bool:
+    def upload_subtitle(self, video_id: int, subtitle: str, lang: str) -> Optional[bool]:
         headers = {
             'X-Auth-Token': self._cdn_access_token,
             'Content-Type': 'application/json'
@@ -74,6 +75,10 @@ class MysteryVideoService:
         res = requests.post(f"https://api.premiumcdn.net/api/v1/files/{video_id}/subtitles/{lang}", headers=headers, data=body)
         ok = res.status_code == 200 or res.status_code == 201
         if not ok:
+            if res.status_code == 400:
+                data = res.json()
+                if 'fileNotVideo' in data:
+                    return None
             print(f"Error uploading subtitle [{lang}]: {res.status_code} {res.text}")
         else:
             print(f"Subtitle [{lang}] uploaded successfully")

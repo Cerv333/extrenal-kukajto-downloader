@@ -42,3 +42,10 @@ def run_process():
             print(f"Error: {e}")
             time.sleep(6)
             print('Reconnecting...')
+
+
+# def dev_run():
+#     with open('C:\\Users\\micha\\Downloads\\5fcc9a5c1a37e.vtt', 'r', encoding='utf-8') as f:
+#         subs = f.read()
+#     ms = MysteryVideoService(config.CDN_UPLOAD_URL, config.MYSTERY_VIDEO_API_URL, config.MYSTERY_VIDEO_ACCESS_TOKEN, config.CDN_ACCESS_TOKEN)
+#     ms.upload_subtitle(138435629, subs, 'cs')

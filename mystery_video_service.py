@@ -8,6 +8,7 @@ import requests
 class MysteryVideoService:
     def __init__(self, cdn_upload_url: str, root_url: str, access_token: str, cdn_access_token: str):
         self._access_token = access_token
+        self._cdn_access_token = cdn_access_token
         self._root_url = root_url
         self._cdn_upload_url = cdn_upload_url
 
@@ -61,13 +62,13 @@ class MysteryVideoService:
 
     def upload_subtitle(self, video_id: int, subtitle: str, lang: str) -> bool:
         headers = {
-            'X-Auth-Token': self._access_token,
+            'X-Auth-Token': self._cdn_access_token,
             'Content-Type': 'application/json'
         }
         body = dumps({'subtitle': subtitle})
         print(body)
         res = requests.post(f"https://api.premiumcdn.net/api/v1/files/{video_id}/subtitles/{lang}", headers=headers, data=body)
-        ok = res.status_code == 200
+        ok = res.status_code == 200 or res.status_code == 201
         if not ok:
             print(f"Error uploading subtitle [{lang}]: {res.status_code} {res.text}")
         else:

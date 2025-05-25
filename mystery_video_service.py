@@ -71,7 +71,6 @@ class MysteryVideoService:
             'Content-Type': 'application/json'
         }
         body = dumps({'subtitle': subtitle})
-        print(body)
         res = requests.post(f"https://api.premiumcdn.net/api/v1/files/{video_id}/subtitles/{lang}", headers=headers, data=body)
         ok = res.status_code == 200 or res.status_code == 201
         if not ok:
